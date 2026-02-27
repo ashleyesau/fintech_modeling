@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: int_customer_account_metrics
+    description: "Intermediate metrics spine at grain customer_id + account_id with reusable 
+derived fields."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - customer_id
+              - account_id
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+      - name: account_id
+        tests:
+          - not_null
+      - name: loan_to_income
+        tests:
+          - not_null
+      - name: investment_to_balance
+        tests:
+          - not_null

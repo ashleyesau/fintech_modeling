@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: kpi_portfolio_by_risk_tolerance
+    description: "Portfolio KPIs grouped by customer risk tolerance."
+    columns:
+      - name: risk_tolerance
+        tests:
+          - not_null
+
+  - name: kpi_wealth_concentration
+    description: "Wealth concentration metrics: top 10% balance share of total balance."
+    columns:
+      - name: total_balance
+        tests:
+          - not_null
+      - name: top_10_share
+        tests:
+          - not_null
+
+  - name: kpi_balance_deciles
+    description: "Balance distribution by decile (1 = highest balances)."
+    columns:
+      - name: balance_decile
+        tests:
+          - not_null
+
+  - name: kpi_leverage_by_risk_tolerance
+    description: "Leverage metrics by risk tolerance (loan-to-income distribution and threshold 
+share)."
+    columns:
+      - name: risk_tolerance
+        tests:
+          - not_null
