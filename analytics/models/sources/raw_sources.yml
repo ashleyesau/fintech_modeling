@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: fintech_data
+        description: "Raw fintech CSV loaded to DuckDB with no transformations."

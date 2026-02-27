@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: stg_fintech_data
+    description: "Staging layer for fintech_data. Columns are renamed to snake_case, redundant 
+raw fields removed, and grain preserved as 1 row per customer_id + account_id snapshot."
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ["customer_id", "account_id"]
+
+    columns:
+      - name: customer_id
+        description: "Unique identifier for the customer."
+        tests:
+          - not_null
+          - unique
+
+      - name: account_id
+        description: "Unique identifier for the account."
+        tests:
+          - not_null
+          - unique
+
+      - name: account_type
+        description: "Type of account (checking/savings/credit/investment)."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["checking", "savings", "credit", "investment"]
+
+      - name: risk_tolerance
+        description: "Customer risk tolerance category."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["Low", "Medium", "High"]
+
+      - name: loan_status
+        description: "Loan status label in the dataset."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["approved", "pending", "rejected"]
+
+      - name: balance
+        description: "Account balance at snapshot time."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: deposits
+        description: "Aggregate deposit amount."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: withdrawals
+        description: "Aggregate withdrawal amount."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: transfers
+        description: "Aggregate transfer amount."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: international_transfers
+        description: "Aggregate international transfer amount."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: investments
+        description: "Aggregate investments amount."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: loan_amount
+        description: "Loan principal amount."
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0.0000001
+
+      - name: interest_rate
+        description: "Loan interest rate stored as a decimal fraction (e.g. 0.08 = 8%)."
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+
+      - name: ts_dates
+        description: "Python-serialized list of dates as a string (not valid JSON)."
+
+      - name: ts_transactions
+        description: "Python-serialized list of transaction values as a string (not valid JSON)."
+
+      - name: ts_repayments
+        description: "Python-serialized list of repayment values as a string (not valid JSON)."
