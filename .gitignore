@@ -1,0 +1,20 @@
+# --- Python ---
+.venv/
+__pycache__/
+*.pyc
+
+# --- OS ---
+.DS_Store
+
+# --- dbt ---
+target/
+dbt_packages/
+logs/
+
+# --- DuckDB ---
+*.db
+*.duckdb
+*.wal
+
+# --- Streamlit ---
+.streamlit/secrets.toml
