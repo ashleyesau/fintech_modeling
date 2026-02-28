@@ -12,7 +12,7 @@ dbt_packages/
 logs/
 
 # --- DuckDB ---
-*.db
+
 *.duckdb
 *.wal
 
