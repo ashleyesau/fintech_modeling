@@ -317,33 +317,37 @@ st.divider()
 st.subheader("1. Portfolio Overview")
 st.caption("A snapshot of the total portfolio size, lending exposure, and product rates across all selected accounts.")
 
-c1, c2, c3, c4, c5, c6 = st.columns(6)
-c1.metric(
+# Row 1: account size and balance metrics
+row1_c1, row1_c2, row1_c3 = st.columns(3)
+row1_c1.metric(
     "Total accounts",
     f"{accounts:,}",
     help="Number of individual customer accounts in the selected portfolio.",
 )
-c2.metric(
+row1_c2.metric(
     "Total balance",
     fmt_money(total_balance),
     help="The combined value held across all accounts - equivalent to assets under management (AUM) for non-loan products.",
 )
-c3.metric(
+row1_c3.metric(
     "Total credit exposure",
     fmt_money(overview.get("total_loan_amount")),
     help="The total outstanding loan principal across all accounts with a credit product.",
 )
-c4.metric(
+
+# Row 2: rates and flow metrics
+row2_c1, row2_c2, row2_c3 = st.columns(3)
+row2_c1.metric(
     "Balance-weighted product rate",
     fmt_pct_from_rate(overview.get("weighted_avg_interest_rate"), 2),
     help="The average interest rate across all accounts, weighted by balance size. For loan accounts this is the borrowing rate; for savings/investment accounts it is the yield. Treat as a directional signal, not a precise rate.",
 )
-c5.metric(
+row2_c2.metric(
     "Total net contributions",
     fmt_money(total_net_flow),
     help="Total net money movement across all accounts (deposits minus withdrawals). A positive number means the portfolio is growing from customer contributions.",
 )
-c6.metric(
+row2_c3.metric(
     "Avg net contributions",
     fmt_money(avg_net_flow),
     help="Average net contributions per account. Useful for understanding typical account behaviour alongside the portfolio-level total.",
@@ -432,7 +436,7 @@ con1, con2, con3 = st.columns(3)
 con1.metric(
     "Top 10% of accounts hold",
     fmt_pct(top_10_share),
-    help="The share of total balance held by the wealthiest 10% of accounts. Above 60–70% is considered high concentration.",
+    help="The share of total balance held by the wealthiest 10% of accounts. Above 60-70% is considered high concentration.",
 )
 con2.metric(
     "Their combined balance",
@@ -445,8 +449,8 @@ con3.metric(
     help=(
         "A measure of balance inequality from 0 to 1. "
         "Below 0.35: relatively even. "
-        "0.35–0.55: moderate concentration. "
-        "0.55–0.70: high concentration. "
+        "0.35-0.55: moderate concentration. "
+        "0.55-0.70: high concentration. "
         "Above 0.70: extreme concentration."
     ),
 )
@@ -506,7 +510,6 @@ with d2:
     )
     if curve is not None:
         plot_df = curve.copy()
-        # Add the perfect equality diagonal for reference
         fig = go.Figure()
         fig.add_trace(go.Scatter(
             x=plot_df["cum_pop_share"], y=plot_df["cum_pop_share"],
@@ -522,7 +525,7 @@ with d2:
         fig.update_layout(
             showlegend=True,
             plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
-            xaxis=dict(title="Cumulative share of accounts (poorest → richest)", tickformat=".0%"),
+            xaxis=dict(title="Cumulative share of accounts (poorest to richest)", tickformat=".0%"),
             yaxis=dict(title="Cumulative share of total balance", tickformat=".0%", showgrid=True, gridcolor="#f0f0f0"),
             margin=dict(t=20, b=40, l=40, r=20),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
