@@ -63,7 +63,7 @@ data/raw/fintech_data.csv
 └──────────────────────────────────────┘
         │
         ▼
-   fintech.db  (SQLite)
+   fintech.db
         │
         ▼
 ┌──────────────────────┐
